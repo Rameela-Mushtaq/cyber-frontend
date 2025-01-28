@@ -24,7 +24,7 @@ const VerifyOtp = () => {
             if (response.success) {
                 console.log(response.token);
                 localStorage.setItem("userName", response.user.name);
-                localStorage.setItem('profileImage', response.user.profileImage.secure_url);
+                //localStorage.setItem('profileImage', response.user.profileImage.secure_url);
 
                 setTimeout(() => {
                     navigate("/");

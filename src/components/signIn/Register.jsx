@@ -146,9 +146,6 @@ const Register = () => {
                                     accept="image/*"
                                 />
                                 </div>
-                                {errors.profileImage && (
-                                    <p className="text-red-500 text-sm">{errors.profileImage}</p>
-                                )}
                             </div>
 
                             {/* API Error Message */}
