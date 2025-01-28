@@ -36,9 +36,9 @@ const Register = () => {
         if (!formData.password) newErrors.password = "Password is required.";
 
         // Profile Image validation
-        if (!formData.profileImage) {
-            newErrors.profileImage = "Profile image is required.";
-        }
+        // if (!formData.profileImage) {
+        //     newErrors.profileImage = "Profile image is required.";
+        // }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
