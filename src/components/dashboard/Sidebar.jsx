@@ -1,12 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from "../../assets/images/logo.png"
 import { SidebarLinks } from '../../data'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as LogoutIcon } from '../../svgs/logout.svg';
 
 const Sidebar = () => {
     const [activeItem, setActiveItem] = useState(1);
     const navigate = useNavigate();
+    const location = useLocation();  // To track the current route
+
+    useEffect(() => {
+        // Set the active item based on the current path
+        const activeLink = SidebarLinks.find(link => link.href === location.pathname);
+        if (activeLink) {
+            setActiveItem(activeLink.id);
+        }
+    }, [location.pathname]);
 
     const handleItemClick = (id, href) => {
         setActiveItem(id);
@@ -38,7 +47,7 @@ const Sidebar = () => {
                             {activeItem === link.id && (
                                 <div className="absolute -left-[10.3%] top-0 h-full w-[4px] bg-purpleBg rounded-r-md"></div>
                             )}
-                            <link.icon className={`object-contain w-5 h-5 ${activeItem === link.id ? ' stroke-white bg-purpleBg' : 'text-contents'}`}/>
+                            <link.icon className={`object-contain w-5 h-5 ${activeItem === link.id ? ' stroke-white ' : 'text-contents'}`}/>
                            
                         
                             <div className="font-normal">{link.name}</div>

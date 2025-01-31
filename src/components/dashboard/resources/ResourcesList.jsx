@@ -45,8 +45,10 @@ const ResourcesList = () => {
     };
 
     const handleEditResource = (resource) => {
-        setEditingResource(resource); // Store resource to be edited
-        navigate('/addResources', { state: { resource: resource } }); // Pass the resource data to Add resource
+        setEditingResource(resource); 
+        
+        const selectedCategory = categories.find(cat => cat._id === resource.category?._id);
+        navigate('/addResources', { state: { resource: resource, category: selectedCategory } }); // Pass the resource data to Add resource
     };
 
     const handleDelete = async (id) => {

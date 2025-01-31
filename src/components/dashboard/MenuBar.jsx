@@ -20,8 +20,8 @@ const MenuBar = () => {
   };
 
   return (
-    <div>
-      <div className="sticky md:z-50 z-40 top-0 w-full">
+    <div className="sticky md:z:50 z-40 top-0">
+      <div className=" w-full">
         <div className="flex justify-between w-full border-b bg-white border-bordered p-3 px-6">
           <div className="w-[35%] bg-[#F5F6FA] border border-bordered px-4 p-1.5 rounded-full md:flex hidden items-center gap-2">
             <IoSearchOutline className="w-fit" />

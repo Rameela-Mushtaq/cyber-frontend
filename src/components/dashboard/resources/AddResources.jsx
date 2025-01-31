@@ -6,15 +6,18 @@ import { MdDelete } from "react-icons/md";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createResource, updateResource } from "../../../services/resources";
 import { getCategories } from '../../../services/category';
+import UploadIcon from '../../share/UploadIcon';
 
 const AddResources = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [selectedCategory, setSelectedCategory] = useState(location.state?.category?._id || "");
     const { resource } = location.state || {};
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [uploading, setUploading] = useState(false);
 
     const [formData, setFormData] = useState({
         category: "",
@@ -24,6 +27,12 @@ const AddResources = () => {
         video: resource?.video || null,
         picture: resource?.picture || null,
     });
+
+    useEffect(() => {
+        if (location.state?.category) {
+            setSelectedCategory(location.state.category._id);
+        }
+    }, [location.state]);
 
     useEffect(() => {
         fetchCategories();
@@ -53,12 +62,17 @@ const AddResources = () => {
     const handleFileChange = (e) => {
         const { name, files } = e.target;
         if (files.length > 0) {
+          setUploading(true); // Show loader
+    
+          setTimeout(() => {
             setFormData((prev) => ({
-                ...prev,
-                [name]: files[0],
+              ...prev,
+              [name]: files[0],
             }));
+            setUploading(false); // Hide loader after upload completes
+          }, 2000); // Simulating upload delay
         }
-    };
+      };
 
     const handleFileDelete = (fileType) => {
         setFormData((prev) => ({
@@ -111,6 +125,7 @@ const AddResources = () => {
 
     return (
         <div className='sm:p-8 p-6'>
+            {uploading && <UploadIcon message="Uploading ..." />}
             <div className='p-6 flex flex-col gap-7 bg-white rounded-lg border'>
                 {/* heading */}
                 <div className='flex justify-between sm:flex-row flex-col gap-3'>
@@ -136,8 +151,8 @@ const AddResources = () => {
                             <div className="relative">
                                 <select
                                     name="category"
-                                    value={formData.category}
-                                    onChange={handleInputChange}
+                                    value={selectedCategory} 
+                                    onChange={(e) => setSelectedCategory(e.target.value)}
                                     required
                                     className='appearance-none p-5 w-full text-contents outline-none'>
                                     <option>Select Category</option>

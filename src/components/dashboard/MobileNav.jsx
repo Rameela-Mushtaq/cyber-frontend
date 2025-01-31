@@ -44,7 +44,7 @@ const MobileNav = () => {
                                     <div className="absolute -left-[10.3%] top-0 h-full w-[4px] bg-purpleBg rounded-r-md"></div>
                                 )}
                                 <div>
-                                    <link.icon className={` ${activeItem === link.id ? ' stroke-white fill-white' : 'text-contents'}`} />
+                                    <link.icon className={` ${activeItem === link.id ? ' stroke-white' : 'text-contents'}`} />
                                 </div>
                                 <div className="font-normal">{link.name}</div>
 
