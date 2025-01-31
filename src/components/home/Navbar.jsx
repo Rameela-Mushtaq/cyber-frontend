@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import { logout } from "../../store/auth/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    //const user = useSelector(selectUser); // Access user state
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = localStorage.getItem('userName');
+
+    const user = useSelector((state) => state.user?.user); 
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -19,7 +22,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('userName');
+        dispatch(logout());
         navigate("/login");
     };
 
@@ -52,12 +55,12 @@ const Navbar = () => {
                     <div>
                         {user ? (
                             <div className="hidden lg:flex items-center text-lg font-semibold">
-                                <div className="whitespace-nowrap py-3 xl:px-10 px-7 ">
+                                <Link to='/dashboard' className="whitespace-nowrap py-3 xl:px-10 px-7 ">
                                     Dashboard
-                                </div>
+                                </Link>
                                 <button
                                     onClick={handleLogout}
-                                    className="whitespace-nowrap py-3 xl:px-10 px-7 bg-[#FF876C] text-white rounded-lg"
+                                    className=" whitespace-nowrap py-3 xl:px-10 px-7 bg-[#FF876C] text-white rounded-lg"
                                 >
                                     Logout
                                 </button>
@@ -109,9 +112,10 @@ const Navbar = () => {
                         <div className="flex flex-col items-center text-lg font-semibold">
                             {user ? (
                                 <div>
-                                    <div className="whitespace-nowrap py-3 xl:px-10 px-7 ">
+                                    <Link to="/dashboard"
+                                     className="whitespace-nowrap py-3 xl:px-10 px-7 ">
                                         Dashboard
-                                    </div>
+                                    </Link>
                                     <button
                                         onClick={handleLogout}
                                         className="whitespace-nowrap py-3 xl:px-10 px-7 bg-[#FF876C] text-white rounded-lg"

@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       
       fontFamily: {
-        hind: ['Hind Madurai'], 
+        hind: ['Hind Madurai'],
+        inter: ["Inter"] 
       },
 
       colors: {
@@ -27,6 +28,11 @@ module.exports = {
         border: '#3D5A80',
         drwarBg: '#BDB4B47D',
         loginBg: '#F1F4F5',
+        purpleBg: '#CF9FFF',
+        label: '#202020',
+        darkblue: '#0E1B56',
+        upload: '#77777777',
+        uploadIcon: '#CF9FFF36'
       }
     },
   },

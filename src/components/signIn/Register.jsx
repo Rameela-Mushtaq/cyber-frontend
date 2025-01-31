@@ -2,9 +2,7 @@ import signIn from "../../assets/images/signIn.png";
 import { useState } from "react";
 import CustomInput from "../share/CustomInput";
 import Section from "../share/Section";
-//import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-//import { login } from '../../store/auth/userSlice'
 import { userRegister } from "../../services/auth";
 
 const Register = () => {
@@ -15,7 +13,6 @@ const Register = () => {
         profileImage: null, // Added profile image field
     });
     const [errors, setErrors] = useState({});
-    //const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -35,10 +32,6 @@ const Register = () => {
         // Password validation
         if (!formData.password) newErrors.password = "Password is required.";
 
-        // Profile Image validation
-        // if (!formData.profileImage) {
-        //     newErrors.profileImage = "Profile image is required.";
-        // }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -138,13 +131,13 @@ const Register = () => {
                                     Profile Image
                                 </label>
                                 <div className="w-full flex flex-col">
-                                <input
-                                    type="file"
-                                    name="profileImage"
-                                    className="p-4 rounded-sm  text-secondary md:text-lg text-base focus-within:outline-none focus-within:ring-1 focus-within:ring-orange"
-                                    onChange={handleChange}
-                                    accept="image/*"
-                                />
+                                    <input
+                                        type="file"
+                                        name="profileImage"
+                                        className="p-4 rounded-sm  text-secondary md:text-lg text-base focus-within:outline-none focus-within:ring-1 focus-within:ring-orange"
+                                        onChange={handleChange}
+                                        accept="image/*"
+                                    />
                                 </div>
                             </div>
 

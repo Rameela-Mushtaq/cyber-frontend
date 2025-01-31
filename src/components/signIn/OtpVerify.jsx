@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
 import { verifyOtp } from "../../services/auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/auth/userSlice";
 import CustomInput from "../share/CustomInput";
 import Section from "../share/Section";
 
 const VerifyOtp = () => {
     const location = useLocation(); // Get the location object
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [email, setEmail] = useState(location.state?.email || ""); // Pre-fill email from location state
     const [otp, setOtp] = useState("");
@@ -20,11 +23,10 @@ const VerifyOtp = () => {
         try {
             const response = await verifyOtp(email, otp);
             setMessage(response.message);
-            
+
             if (response.success) {
                 console.log(response.token);
-                localStorage.setItem("userName", response.user.name);
-                localStorage.setItem('profileImage', response.user.profileImage.secure_url);
+                dispatch(setUser(response.user));
 
                 setTimeout(() => {
                     navigate("/");

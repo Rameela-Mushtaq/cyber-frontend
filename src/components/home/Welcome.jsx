@@ -1,44 +1,25 @@
-//import { useSelector } from 'react-redux';
-//import { selectUser } from '../../store/auth/userSelectors';
-//import ProtectedRoute from '../signIn/ProtectedRoute'; 
-
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Welcome = () => {
-  const [userName, setUserName] = useState("");
-  const [profileImage, setProfileImage] = useState("");
-
-  useEffect(() => {
-    const user = localStorage.getItem('userName');
-    const image = localStorage.getItem('profileImage');
-
-    console.log("Fetched userName:", user);  // Debug userName
-    console.log("Fetched profileImage:", image);
-    if (user) {
-      setUserName(user);
-    }
-    if (image) {
-      setProfileImage(image);
-    }
-  }, []);
+  const user = useSelector((state) => state.user?.user);
+  const imageUrl = user?.profileImage?.secure_url || user?.profileImage || ""; 
 
   return (
     <div className="">
-      <div className='text-center py-20 text-2xl font-bold'>
-        Welcome, <span className='text-orange'>{userName ? userName : ''}!</span>
+      <div className="text-center py-20 text-2xl font-bold">
+        Welcome, <span className="text-orange">{user?.name || ""}!</span>
       </div>
 
-      {profileImage && (
+      {user?.profileImage && (
         <div className="mt-4">
           <img
-            src={profileImage}
+            src={imageUrl}
             alt="Profile"
             className="rounded-full w-24 h-24 object-cover mx-auto"
           />
         </div>
       )}
     </div>
-
   );
 };
 

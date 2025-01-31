@@ -1,6 +1,18 @@
 import { FaFacebookF, FaXTwitter } from "react-icons/fa6";
 import { FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
+import { ReactComponent as HomeIcon } from '../svgs/home.svg';
+import { ReactComponent as ArticleIcon } from '../svgs/article.svg';
+import { ReactComponent as AssessmentIcon } from '../svgs/assessment.svg';
+import { ReactComponent as UserIcon } from '../svgs/userr.svg';
+import { ReactComponent as VideoIcon } from '../svgs/video.svg';
+import { ReactComponent as CourseIcon } from '../svgs/cources.svg';
+import { ReactComponent as PricingIcon } from '../svgs/pricing.svg';
+import { ReactComponent as ResourceIcon } from '../svgs/resources.svg';
+import { ReactComponent as SettingsIcon } from '../svgs/setting.svg';
+
+
+
 
 export const FooterSections = [
   {
@@ -462,3 +474,62 @@ export const InfoData = [
     category: "Motivation",
   },
 ];
+
+
+export const SidebarLinks = [
+  {
+    id: 1,
+    name: "Home",
+    href: "/dashboard",
+    icon: HomeIcon, // Use the React component for Home icon
+  },
+  {
+    id: 2,
+    name: "Articles",
+    href: "/articles",
+    icon: ArticleIcon, // Use the React component for Article icon
+  },
+  {
+    id: 3,
+    name: "Assessments",
+    href: "/assessments",
+    icon: AssessmentIcon, // Use the React component for Assessment icon
+  },
+  {
+    id: 4,
+    name: "Users",
+    href: "/users",
+    icon: UserIcon, // Use the React component for User icon
+  },
+  {
+    id: 5,
+    name: "Videos",
+    href: "/videos",
+    icon: VideoIcon, // Use the React component for Video icon
+  },
+  {
+    id: 6,
+    name: "Courses",
+    href: "/courses",
+    icon: CourseIcon, // Use the React component for Course icon
+  },
+  {
+    id: 7,
+    name: "Pricing Plans",
+    href: "/pricing",
+    icon: PricingIcon, // Use the React component for Pricing icon
+  },
+  {
+    id: 8,
+    name: "Resources",
+    href: "/resources",
+    icon: ResourceIcon, // Use the React component for Resource icon
+  },
+  {
+    id: 9,
+    name: "Settings",
+    href: "/settings",
+    icon: SettingsIcon, // Use the React component for Settings icon
+  },
+];
+

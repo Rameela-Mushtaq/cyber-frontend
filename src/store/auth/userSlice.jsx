@@ -9,8 +9,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, action) => {
-      console.log(action.payload)
+    setUser: (state, action) => {
       state.user = action.payload;
     },
     logout: (state) => {
@@ -20,7 +19,7 @@ const userSlice = createSlice({
 });
 
 
-export const { login, logout } = userSlice.actions;
+export const { setUser, logout } = userSlice.actions;
 export default userSlice.reducer;
 
 
