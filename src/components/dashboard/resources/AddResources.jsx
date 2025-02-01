@@ -31,6 +31,7 @@ const AddResources = () => {
     useEffect(() => {
         if (location.state?.category) {
             setSelectedCategory(location.state.category._id);
+            setFormData((prev) => ({ ...prev, category: location.state.category._id }));
         }
     }, [location.state]);
 
@@ -48,8 +49,6 @@ const AddResources = () => {
         }
     };
 
-    
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -62,17 +61,17 @@ const AddResources = () => {
     const handleFileChange = (e) => {
         const { name, files } = e.target;
         if (files.length > 0) {
-          setUploading(true); // Show loader
-    
-          setTimeout(() => {
-            setFormData((prev) => ({
-              ...prev,
-              [name]: files[0],
-            }));
-            setUploading(false); // Hide loader after upload completes
-          }, 2000); // Simulating upload delay
+            setUploading(true); // Show loader
+
+            setTimeout(() => {
+                setFormData((prev) => ({
+                    ...prev,
+                    [name]: files[0],
+                }));
+                setUploading(false); // Hide loader after upload completes
+            }, 2000); // Simulating upload delay
         }
-      };
+    };
 
     const handleFileDelete = (fileType) => {
         setFormData((prev) => ({
@@ -83,43 +82,49 @@ const AddResources = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-            setLoading(true);
-            setError(null);
-            setSuccess(null);
+        setLoading(true);
+        setError(null);
+        setSuccess(null);
 
-            const formDataToSend = new FormData();
-            formDataToSend.append('category', formData.category);
-            formDataToSend.append('title', formData.title);
-            formDataToSend.append('description', formData.description);
-            formDataToSend.append('link', formData.link);
-            if (formData.picture) {
-                formDataToSend.append('picture', formData.picture);
-            }
-            if (formData.video) {
-                formDataToSend.append('video', formData.video);
-            }
+        const formDataToSend = new FormData();
+        // Ensure category is sent correctly
+        if (!formData.category) {
+            setError("Please select a category");
+            setLoading(false);
+            return;
+        }
+        formDataToSend.append('category', formData.category);
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('link', formData.link);
+        if (formData.picture) {
+            formDataToSend.append('picture', formData.picture);
+        }
+        if (formData.video) {
+            formDataToSend.append('video', formData.video);
+        }
 
-            try {
-                if (resource) {
-                    // If a resource is passed (edit mode)
-                    await updateResource(resource._id, formDataToSend);
-                    setSuccess('Resource updated successfully!');
-                } else {
-                    // If no resource is passed (add mode)
-                    await createResource(formDataToSend);
-                    setSuccess('Resource added successfully!');
-                }
-                setFormData({ category: '', title: '', description: '', link: '', picture: null, video: null });
-                setTimeout(() => {
-                    navigate("/resources");
-                }, 2000);
-
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
+        try {
+            if (resource) {
+                // If a resource is passed (edit mode)
+                await updateResource(resource._id, formDataToSend);
+                setSuccess('Resource updated successfully!');
+            } else {
+                // If no resource is passed (add mode)
+                await createResource(formDataToSend);
+                setSuccess('Resource added successfully!');
             }
-        
+            setFormData({ category: '', title: '', description: '', link: '', picture: null, video: null });
+            setTimeout(() => {
+                navigate("/resources");
+            }, 2000);
+
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+
     };
 
 
@@ -151,9 +156,12 @@ const AddResources = () => {
                             <div className="relative">
                                 <select
                                     name="category"
-                                    value={selectedCategory} 
-                                    onChange={(e) => setSelectedCategory(e.target.value)}
-                                    required
+                                    value={formData.category}  // ✅ This ensures formData is updated
+                                    onChange={(e) => {
+                                        const selectedValue = e.target.value;
+                                        setSelectedCategory(selectedValue);  // ✅ Update selectedCategory
+                                        setFormData((prev) => ({ ...prev, category: selectedValue }));  // ✅ Update formData.category
+                                    }}
                                     className='appearance-none p-5 w-full text-contents outline-none'>
                                     <option>Select Category</option>
                                     {categories.map(category => (
@@ -214,16 +222,25 @@ const AddResources = () => {
                                     <p className="text-upload mt-2">Upload Media File</p>
                                 </label>
                                 {formData.video && (
-                                    <div className="flex items-center justify-center mt-2 text-sm text-green-600">
-                                        <span>{formData.video.name}</span>
-                                        <button onClick={() => handleFileDelete("video")} className="ml-2 text-red-500">
-                                            <MdDelete />
-                                        </button>
-                                    </div>
+                                    resource ? (
+                                        <div className="flex items-center justify-center mt-2 text-sm text-green-600">
+                                            <video src={typeof formData.video === 'string' ? formData.video : URL.createObjectURL(formData.video)} controls className="mt-2 w-1/2 md:h-48 h-20 object-cover" />
+                                            <button onClick={() => handleFileDelete("video")} className="ml-2 text-red-500">
+                                                <MdDelete />
+                                            </button>
+                                        </div>
+
+                                    ) : (
+                                        <div className="flex items-center justify-center mt-2 text-sm text-green-600">
+                                            <span>{formData.video.name}</span>
+                                            <button onClick={() => handleFileDelete("video")} className="ml-2 text-red-500">
+                                                <MdDelete />
+                                            </button>
+                                        </div>
+                                    )
                                 )}
                             </div>
                         </div>
-
 
                         {/* File Upload - Picture */}
                         <div className="pt-3">
@@ -244,13 +261,34 @@ const AddResources = () => {
                                     <p className="text-upload mt-2">Upload Picture</p>
                                 </label>
                                 {formData.picture && (
+                                    resource ? (
+                                        <div className="flex items-center justify-center mt-2 text-sm text-green-600">
+                                            <img 
+                                            src={typeof formData.picture === 'string' ? formData.picture : URL.createObjectURL(formData.picture)} 
+                                            alt='resource Icon' 
+                                            className="mt-2 w-20 h-20 object-cover" />
+                                            <button onClick={() => handleFileDelete("picture")} className="ml-2 text-red-500">
+                                                <MdDelete />
+                                            </button>
+                                        </div>
+
+                                    ) : (
+                                        <div className="flex items-center justify-center mt-2 text-sm text-green-600">
+                                            <span>{formData.picture.name}</span>
+                                            <button onClick={() => handleFileDelete("picture")} className="ml-2 text-red-500">
+                                                <MdDelete />
+                                            </button>
+                                        </div>
+                                    )
+                                )}
+                                {/* {formData.picture && (
                                     <div className="flex items-center justify-center mt-2 text-sm text-green-600">
                                         <span>{formData.picture.name}</span>
                                         <button onClick={() => handleFileDelete("picture")} className="ml-2 text-red-500">
                                             <MdDelete />
                                         </button>
                                     </div>
-                                )}
+                                )} */}
                             </div>
 
                         </div>

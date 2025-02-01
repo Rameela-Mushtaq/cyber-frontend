@@ -15,9 +15,9 @@ export const getCategories = async () => {
 };
 
 // Create a new category (with image upload)
-export const createCategory = async (categoryData) => {
+export const createCategory = async (formData) => {
     try {
-        const response = await axios.post(`${backend_url}/api/category/addCategory`, categoryData, {
+        const response = await axios.post(`${backend_url}/api/category/addCategory`, formData, {
             headers: { "Content-Type": "multipart/form-data" }, // Ensure file upload works
         });
         return response.data;
@@ -28,9 +28,9 @@ export const createCategory = async (categoryData) => {
 };
 
 // Update a category (with optional image upload)
-export const updateCategory = async (id, categoryData) => {
+export const updateCategory = async (id, formData) => {
     try {
-        const response = await axios.put(`${backend_url}/api/category/updateCategory/${id}`, categoryData, {
+        const response = await axios.put(`${backend_url}/api/category/updateCategory/${id}`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
         return response.data;

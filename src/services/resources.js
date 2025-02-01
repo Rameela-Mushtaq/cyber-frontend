@@ -15,9 +15,9 @@ export const getResources = async () => {
 }
 
 //Create a new resources
-export const createResource = async (resourceData) => {
+export const createResource = async (formData) => {
     try {
-        const response = await axios.post(`${backend_url}/api/resource/addResource`, resourceData, {
+        const response = await axios.post(`${backend_url}/api/resource/addResource`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
         return response.data;
@@ -29,9 +29,9 @@ export const createResource = async (resourceData) => {
 
 
 //update a resource
-export const updateResource = async (id, resourceData) => {
+export const updateResource = async (id, formData) => {
     try {
-        const response = await axios.put(`${backend_url}/api/resource/updateResource/${id}`, resourceData, {
+        const response = await axios.put(`${backend_url}/api/resource/updateResource/${id}`, formData, {
             headers: { "Content-Type": "multipart/form-data" },
         })
         return (await response).data;
